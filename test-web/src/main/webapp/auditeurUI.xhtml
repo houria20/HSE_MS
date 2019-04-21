@@ -1,0 +1,74 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:f="http://java.sun.com/jsf/core"
+      xmlns:ui="http://java.sun.com/jsf/facelets"
+      xmlns:p="http://primefaces.org/ui">
+    <h:head>
+        <title>Grille de Diagnostic/Audit</title>
+          </h:head>
+    <h:body >
+        <h:form>
+            <p:dataTable stickyHeader="true">
+                <f:facet name="header">
+                    Grille de diagnostic/audit
+                </f:facet>
+                <p:columnGroup type="header">
+                    <p:row>
+                        <p:column rowspan="2" headerText="N°" >
+                            <p:rowToggler />
+                        </p:column>
+                        <p:column rowspan="2" headerText="Exigences" />
+                        <p:column rowspan="2" headerText="Points de Contrôle" />
+                        <p:column rowspan="2" headerText="Réalité sur le Terrain" />
+                        <p:column rowspan="2" headerText="Guide de Notation" />
+                        <p:column colspan="3" headerText="Evaluation" />
+                        <p:column rowspan="2" headerText="Actions" />
+                        <p:column colspan="3" headerText="Projection" />
+                    </p:row>
+                    <p:row>
+                        <p:column headerText="Org." />
+                        <p:column headerText="Op." />
+                        <p:column headerText="Typologie de Constat" />
+                        <p:column headerText="Org." />
+                        <p:column headerText="Op." />
+                        <p:column headerText="Typologie de Constat" />
+                    </p:row>
+                </p:columnGroup>
+                <p:rowExpansion>
+                    <p:subTable var="stats" value="hhhh">
+                        <p:column>
+                            <h:outputText value="dddddd" />
+                        </p:column>
+                        <p:column>
+                            <h:outputText value="#DDd" />
+                        </p:column>
+                        <p:column>
+                            <h:outputText value="ddddd" />
+                        </p:column>
+                        <p:column>
+                            <h:outputText value="dddddd" />
+                        </p:column><p:column>
+                            <h:outputText value="dddddd" />
+                        </p:column><p:column>
+                            <h:outputText value="dddddd" />
+                        </p:column><p:column>
+                            <h:outputText value="dddddd" />
+                        </p:column><p:column>
+                            <h:outputText value="dddddd" />
+                        </p:column><p:column>
+                            <h:outputText value="dddddd" />
+                        </p:column><p:column>
+                            <h:outputText value="dddddd" />
+                        </p:column><p:column>
+                            <h:outputText value="dddddd" />
+                        </p:column><p:column>
+                            <h:outputText value="dddddd" />
+                        </p:column>
+                    </p:subTable>
+                </p:rowExpansion>
+            </p:dataTable>
+
+        </h:form>
+    </h:body>
+</html>

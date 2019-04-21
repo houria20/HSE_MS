@@ -1,0 +1,339 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html>
+<html  xmlns="http://www.w3.org/1999/xhtml"
+       xmlns:h="http://java.sun.com/jsf/html"
+       xmlns:f="http://java.sun.com/jsf/core"
+       xmlns:ui="http://java.sun.com/jsf/facelets"
+       xmlns:p="http://primefaces.org/ui">
+    <h:head>
+        <title>Gestion des Utilisateurs</title>
+        <h:outputStylesheet library = "css" name = "style.css"  />
+    </h:head>
+    <h:body >
+        <h:graphicImage  library = "images"  name="header.png" id="header" />
+        <h:graphicImage  library = "images"  name="logoSonatrachMenu.png" id="logoHeader"/>
+        <p:commandLink id="logoutHeader">
+                 <h:graphicImage  library = "images"  name="logout.png" />
+            </p:commandLink>
+        <h:form id="form">
+            <p:growl id="msgs" showDetail="true"/>
+            <p:growl id="message" showDetail="true"/>
+            
+            <p:dataTable id="user" var="user" widgetVar="usersTable" value="#{adminController.utilisateurs}" editable="true" styleClass="tab" emptyMessage="Aucun compte existant avec les critères donnés" filteredValue="#{adminController.filteredAccounts}">
+                <f:facet name="header">
+                    Liste des utilisateurs
+                </f:facet>
+                <p:ajax event="rowEdit" listener="#{adminController.onRowEdit}" update=":form:msgs" />
+                <p:ajax event="rowEditCancel" listener="#{adminController.onRowCancel}" update=":form:msgs" />
+                <p:column headerText="Id">
+                    <p:cellEditor>
+                        <f:facet name="output"><h:outputText value="#{utilisateur.id}" /></f:facet>
+                        <f:facet name="input"><p:inputText id="modelInput" value="#{utilisateur.id}" style="width:100%"/></f:facet>
+                    </p:cellEditor> 
+                </p:column>
+                <p:column headerText="Nom">
+                    <p:cellEditor>
+                        <f:facet name="output"><h:outputText value="#{utilisateur.nom}" /></f:facet>
+                        <f:facet name="input"><p:inputText value="#{utilisateur.nom}" style="width:100%" label="nom"/></f:facet>
+                    </p:cellEditor>
+                </p:column>
+                <p:column headerText="Prénom"> 
+                    <p:cellEditor>
+                        <f:facet name="output"><h:outputText value="#{utilisateur.prenom}" /></f:facet>
+                        <f:facet name="input"><p:inputText  value="#{utilisateur.prenom}" style="width:100%" label="prenom"/></f:facet>
+                    </p:cellEditor>
+                </p:column>
+                <p:column headerText="Email">
+                    <p:cellEditor>
+                        <f:facet name="output"><h:outputText value="#{utilisateur.email}" /></f:facet>
+                        <f:facet name="input"><p:inputText  value="#{utilisateur.email}" style="width:100%" label="email"/></f:facet>
+                    </p:cellEditor>
+                </p:column>
+                <p:column headerText="Nom d'utilisateur">
+                    <p:cellEditor>
+                        <f:facet name="output"><h:outputText value="#{utilisateur.username}" /></f:facet>
+                        <f:facet name="input"><p:inputText value="#{utilisateur.username}" style="width:100%" label="userName"/></f:facet>
+                    </p:cellEditor>
+                </p:column>
+                <p:column headerText="Mot De Passe">
+                    <p:cellEditor>
+                        <f:facet name="output"><h:outputText value="#{utilisateur.pw}" /></f:facet>
+                        <f:facet name="input"><p:inputText value="#{utilisateur.pw}" style="width:100%" label="MotDePasse"/></f:facet>
+                    </p:cellEditor>
+                </p:column>
+                <p:column headerText="Poste" filterBy="#{utilisateur.poste}"  filterMatchMode="exact">
+                    <p:cellEditor>
+                        <f:facet name="output"><h:outputText value="#{utilisateur.poste}" /></f:facet>
+                        <f:facet name="input"><p:inputText value="#{utilisateur.poste}" style="width:100%" label="Poste"/></f:facet>
+                    </p:cellEditor>
+                    <f:facet name="filter">
+                        <p:selectOneMenu onchange="PF('usersTable').filter()" styleClass="custom-filter">
+                            <f:selectItem itemLabel="Selectionner un poste" itemValue="#{null}" noSelectionOption="true" />
+                            <f:selectItems value="#{adminController.postes}" />
+                        </p:selectOneMenu>
+                    </f:facet>
+                </p:column>
+                <p:column headerText="Structure">
+                    <p:cellEditor>
+                        <f:facet name="output"><h:outputText value="#{utilisateur.structure}" /></f:facet>
+                        <f:facet name="input"><p:inputText value="#{utilisateur.structure}" style="width:100%" label="Structure"/></f:facet>
+                    </p:cellEditor>
+                </p:column>
+                <p:column style="width:35px">
+                    <p:rowEditor />
+                </p:column>
+                <p:column>
+                    <p:commandButton value="Delete" action="#{adminController.destroyWorld()}" update=":form:message" >
+                        <p:confirm header="Confirmation" message="Volez vous supprimer ce compte?" icon="pi pi-exclamation-triangle" />
+                    </p:commandButton>
+                    <p:confirmDialog global="true" showEffect="fade" hideEffect="fade">
+                        <p:commandButton value="Oui" type="button" action="#{adminController.deleteAction(user)}" styleClass="ui-confirmdialog-yes" icon="pi pi-check" />
+                        <p:commandButton value="Non" type="button" styleClass="ui-confirmdialog-no" icon="pi pi-times" />
+                    </p:confirmDialog>
+                </p:column>
+            </p:dataTable>
+            <p:menuButton value="Ajouter">
+                <p:menuitem value="Vice-Président" onclick="PF('dlg1').show();" />
+                <p:menuitem value="Responsable Entité" onclick="PF('dlg2').show();" />
+                <p:menuitem value="Asset Manager" onclick="PF('dlg3').show();" />
+                <p:menuitem value="Auditeur CP" onclick="PF('dlg4').show();" />
+                <p:menuitem value="Analyste" onclick="PF('dlg5').show();" />
+                <p:menuitem value="Responsable Reporting" onclick="PF('dlg6').show();" />
+            </p:menuButton>
+        </h:form> 
+        <p:dialog id="dialog1" header="Formulaire d'ajout d'un VP" widgetVar="dlg1" showEffect="puff" hideEffect="scale" height="350">
+            <p:ajax update="dialog1" resetValues="true"/>
+            <h:form>
+                <p:panel>
+                    <h:panelGrid columns="3" cellpadding="5">
+                        <h:outputLabel for="nom" value="Nom" />
+                        <p:inputText id="nom" value="#{adminController.nom}" required="true">
+                            <p:ajax update="@next" event="keyup"/>
+                        </p:inputText>
+                        <p:message for="@previous"/>
+                        <h:outputLabel for="prenom" value="Prénom" />
+                        <p:inputText id="prenom" value="#{adminController.prenom}">
+                            <p:ajax update="@next" event="keyup"/>
+                        </p:inputText>  
+                        <p:message for="@previous"/>
+                        <h:outputLabel for="email" value="E-mail" />
+                        <p:inputText id="email" value="#{adminController.email}">
+                            <p:ajax update="@next" event="keyup"/>
+                        </p:inputText>        
+                        <p:message for="@previous"/>
+                        <h:outputLabel for="password" value="Mot de Passe" />
+                        <p:password id="password" value="#{adminController.pw}" required="true">
+                            <p:ajax update="@next" event="keyup"/>
+                        </p:password>
+                        <p:message for="@previous"/>
+                    </h:panelGrid>
+                    <p:commandButton value="Enregistrer"  action="#{adminController.addUser()}" validateClient="true"/>
+                </p:panel>
+            </h:form>
+        </p:dialog>
+        <p:dialog id="dialog2" header="Formulaire d'ajout d'un Responsable Entité" widgetVar="dlg2" showEffect="puff" hideEffect="scale" height="350">         
+            <p:ajax update="dialog2" resetValues="true" />
+            <h:form>
+                <p:panel>
+                    <h:panelGrid columns="3" cellpadding="5">
+                        <h:outputLabel for="nom" value="Nom" />
+                        <p:inputText id="nom" value="#{adminController.nom}" required="true">
+                            <p:ajax update="@next" event="keyup"/>
+                        </p:inputText>    
+                        <p:message for="@previous"/>
+                        <h:outputLabel for="prenom" value="Prénom" />
+                        <p:inputText id="prenom" value="#{adminController.prenom}">
+                            <p:ajax update="@next" event="keyup"/>
+                        </p:inputText>
+                        <p:message for="@previous"/>
+                        <h:outputLabel for="email" value="E-mail" />
+                        <p:inputText id="email" value="#{adminController.email}">
+                            <p:ajax update="@next" event="keyup"/>
+                        </p:inputText>                    
+                        <p:message for="@previous"/>
+                        <h:outputLabel for="password" value="Mot de Passe" />
+                        <p:password id="password" value="#{adminController.pw}" required="true">
+                            <p:ajax update="@next" event="keyup"/>
+                        </p:password>   
+                        <p:message for="@previous"/>
+                        <h:outputLabel for="entite" value="Entité" />
+                        <p:inputText id="entite" value="#{adminController.entite}" required="true">
+                            <p:ajax update="@next" event="keyup"/>
+                        </p:inputText>  
+                        <p:message for="@previous"/>
+                    </h:panelGrid>
+                    <p:commandButton value="Enregistrer"  action="#{adminController.add}" validateClient="true" />
+                </p:panel>
+            </h:form>
+        </p:dialog>
+        <p:dialog id="dialog3" header="Formulaire d'ajout d'un Asset Manager" widgetVar="dlg3" showEffect="puff" hideEffect="scale" height="350">         
+            <p:ajax update="dialog3" resetValues="true"/>
+            <h:form>
+                <p:panel>
+                    <h:panelGrid columns="2" cellpadding="5">
+                        <h:outputLabel for="nom" value="Nom" />
+                        <p:inputText id="nom" value="#{adminController.nom}" required="true">
+                            <p:ajax update="@next" event="keyup"/>
+                        </p:inputText>                    
+                        <p:message for="@previous"/>
+                        <h:outputLabel for="prenom" value="Prénom" />
+                        <p:inputText id="prenom" value="#{adminController.prenom}">
+                            <p:ajax update="@next" event="keyup"/>
+                        </p:inputText>
+                        <p:message for="@previous"/>
+                        <h:outputLabel for="email" value="E-mail" />
+                        <p:inputText id="email" value="#{adminController.email}">
+                            <p:ajax update="@next" event="keyup"/>
+                        </p:inputText>
+                        <p:message for="@previous"/>
+                        <h:outputLabel for="password" value="Mot de Passe" />
+                        <p:password id="password" value="#{adminController.pw}" required="true">
+                            <p:ajax update="@next" event="keyup"/>
+                        </p:password>
+                        <p:message for="@previous"/>
+                        <h:outputLabel for="entite" value="Entité" />
+                        <p:inputText id="entite" value="#{adminController.entite}" required="true">
+                            <p:ajax update="@next" event="keyup"/>
+                        </p:inputText>                    
+                        <p:message for="@previous"/>
+                        <h:outputLabel for="site" value="Site" />
+                        <p:inputText id="site" value="#{adminController.site}" required="true">
+                            <p:ajax update="@next" event="keyup"/>
+                        </p:inputText>
+                        <p:message for="@previous"/>
+                    </h:panelGrid>
+                    <p:commandButton value="Enregistrer"  action="#{adminController.add}" validateClient="true" />
+                </p:panel>
+            </h:form>
+        </p:dialog>
+        <p:dialog id ="dialog4" header="Formulaire d'ajout d'un Auditeur CP" widgetVar="dlg4" showEffect="puff" hideEffect="scale" height="350">         
+            <p:ajax update="dialog4" resetValues="true"/>
+            <h:form>
+                <p:panel>
+                    <h:panelGrid columns="3"  >
+                        <h:outputLabel for="idEquipe" value="ID Equipe" />
+                        <p:inputText id="idEquipe" value="#{adminController.idEquipe}" required="true">
+                            <p:ajax update="@next" event="keyup" />
+                        </p:inputText>                   
+                        <p:message for="@previous"/>
+                        <h:outputLabel for="nom" value="Nom" />
+                        <p:inputText id="nom" value="#{adminController.nom}" required="true">
+                            <p:ajax update="@next" event="keyup" />
+                        </p:inputText>                    
+                        <p:message for="@previous"/>
+                        <h:outputLabel for="prenom" value="Prénom" />
+                        <p:inputText id="prenom" value="#{adminController.prenom}">
+                            <p:ajax update="@next" event="keyup" />
+                        </p:inputText>                    
+                        <p:message for="@previous"/>
+                        <h:outputLabel for="email" value="E-mail" />
+                        <p:inputText id="email" value="#{adminController.email}">
+                            <p:ajax update="@next" event="keyup" />
+                        </p:inputText>                    
+                        <p:message for="@previous"/>
+                        <h:outputLabel for="password" value="Mot de Passe" />
+                        <p:password id="password" value="#{adminController.pw}" required="true">
+                            <p:ajax update="@next" event="keyup" />
+                        </p:password>                    
+                        <p:message for="@previous"/>
+                        <h:outputLabel for="entite" value="Entité" />
+                        <p:inputText id="entite" value="#{adminController.entite}" required="true">
+                            <p:ajax update="@next" event="keyup" />
+                        </p:inputText>
+                        <p:message for="@previous"/>
+                        <h:outputLabel for="site" value="Site" />
+                        <p:inputText id="site" value="#{adminController.site}" required="true">
+                            <p:ajax update="@next" event="keyup" />
+                        </p:inputText>
+                        <p:message for="@previous"/>
+                        <p:selectBooleanCheckbox value="#{adminController.presidentCP}" itemLabel="Président CP"/>
+                    </h:panelGrid>
+                    <p:commandButton value="Enregistrer"  action="#{adminController.add()}"  validateClient="true"/>
+                </p:panel>
+            </h:form>
+        </p:dialog>
+        <p:dialog id ="dialog5" header="Formulaire d'ajout d'un Analyste" widgetVar="dlg5" showEffect="puff" hideEffect="scale" height="350">         
+            <p:ajax update="dialog5" resetValues="true"/>
+            <h:form>
+                <p:panel>
+                    <h:panelGrid columns="3"  >
+                        <h:outputLabel for="nom" value="Nom" />
+                        <p:inputText id="nom" value="#{adminController.nom}" required="true">
+                            <p:ajax update="@next" event="keyup" />
+                        </p:inputText>                    
+                        <p:message for="@previous"/>
+                        <h:outputLabel for="prenom" value="Prénom" />
+                        <p:inputText id="prenom" value="#{adminController.prenom}">
+                            <p:ajax update="@next" event="keyup" />
+                        </p:inputText>                    
+                        <p:message for="@previous"/>
+                        <h:outputLabel for="email" value="E-mail" />
+                        <p:inputText id="email" value="#{adminController.email}">
+                            <p:ajax update="@next" event="keyup" />
+                        </p:inputText>                    
+                        <p:message for="@previous"/>
+                        <h:outputLabel for="password" value="Mot de Passe" />
+                        <p:password id="password" value="#{adminController.pw}" required="true">
+                            <p:ajax update="@next" event="keyup" />
+                        </p:password>                    
+                        <p:message for="@previous"/>
+                        <h:outputLabel for="entite" value="Entité" />
+                        <p:inputText id="entite" value="#{adminController.entite}" required="true">
+                            <p:ajax update="@next" event="keyup" />
+                        </p:inputText>
+                        <p:message for="@previous"/>
+                        <h:outputLabel for="site" value="Site" />
+                        <p:inputText id="site" value="#{adminController.site}" required="true">
+                            <p:ajax update="@next" event="keyup" />
+                        </p:inputText>
+                        <p:message for="@previous"/>
+                    </h:panelGrid>
+                    <p:commandButton value="Enregistrer"  action="#{adminController.add()}"  validateClient="true"/>
+                </p:panel>
+            </h:form>
+        </p:dialog>
+        <p:dialog id ="dialog6" header="Formulaire d'ajout d'un Responsable Reporting" widgetVar="dlg6" showEffect="puff" hideEffect="scale" height="350">         
+            <p:ajax update="dialog6" resetValues="true"/>
+            <h:form>
+                <p:panel>
+                    <h:panelGrid columns="3"  >
+                        <h:outputLabel for="username" value="Username" />
+                        <h:outputText value="#{adminController.username}" id="username"/><font></font>
+                        <h:outputLabel for="nom" value="Nom" />
+                        <p:inputText id="nom" value="#{adminController.nom}" required="true">
+                            <p:ajax update="username" event="keyup" />
+                           
+                        </p:inputText>                    
+                        <p:message for="@previous"/>
+                        <h:outputLabel for="prenom" value="Prénom" />
+                        <p:inputText id="prenom" value="#{adminController.prenom}">
+                            <p:ajax update="@next" event="keyup" />
+                        </p:inputText>                    
+                        <p:message for="@previous"/>
+                        <h:outputLabel for="email" value="E-mail" />
+                        <p:inputText id="email" value="#{adminController.email}">
+                            <p:ajax update="@next" event="keyup" />
+                        </p:inputText>                    
+                        <p:message for="@previous"/>
+                        <h:outputLabel for="password" value="Mot de Passe" />
+                        <p:password id="password" value="#{adminController.pw}" required="true">
+                            <p:ajax update="@next" event="keyup" />
+                        </p:password>                    
+                        <p:message for="@previous"/>
+                        <h:outputLabel for="entite" value="Entité" />
+                        <p:inputText id="entite" value="#{adminController.entite}" required="true">
+                            <p:ajax update="@next" event="keyup" />
+                        </p:inputText>
+                        <p:message for="@previous"/>
+                        <h:outputLabel for="site" value="Site" />
+                        <p:inputText id="site" value="#{adminController.site}" required="true">
+                            <p:ajax update="@next" event="keyup" />
+                        </p:inputText>
+                        <p:message for="@previous"/>
+                    </h:panelGrid>
+                    <p:commandButton value="Enregistrer"  action="#{adminController.add()}"  validateClient="true"/>
+                </p:panel>
+            </h:form>
+        </p:dialog>
+    </h:body>
+</html>
