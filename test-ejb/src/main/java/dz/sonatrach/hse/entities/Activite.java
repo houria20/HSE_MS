@@ -6,8 +6,7 @@
 package dz.sonatrach.hse.entities;
 
 import java.io.Serializable;
-import java.math.BigDecimal;
-import java.math.BigInteger;
+
 import java.util.List;
 import javax.persistence.Basic;
 import javax.persistence.Column;
@@ -39,12 +38,12 @@ public class Activite implements Serializable {
     @Basic(optional = false)
     @NotNull
     @Column(name = "IDACT")
-    private BigDecimal idact;
+    private int idact;
     @Size(max = 255)
     @Column(name = "DESIGNATIONACT")
     private String designationact;
     @Column(name = "NBENTITE")
-    private BigInteger nbentite;
+    private int nbentite;
     @OneToMany(mappedBy = "idact")
     private List<Vicepresident> vicepresidentList;
     @OneToMany(mappedBy = "idact")
@@ -53,15 +52,18 @@ public class Activite implements Serializable {
     public Activite() {
     }
 
-    public Activite(BigDecimal idact) {
+    public Activite(int idact, String designationact, int nbentite){
         this.idact = idact;
+        this.designationact = designationact;
+        this.nbentite = nbentite;
     }
 
-    public BigDecimal getIdact() {
+
+    public int getIdact() {
         return idact;
     }
 
-    public void setIdact(BigDecimal idact) {
+    public void setIdact(int idact) {
         this.idact = idact;
     }
 
@@ -73,11 +75,11 @@ public class Activite implements Serializable {
         this.designationact = designationact;
     }
 
-    public BigInteger getNbentite() {
+    public int getNbentite() {
         return nbentite;
     }
 
-    public void setNbentite(BigInteger nbentite) {
+    public void setNbentite(int nbentite) {
         this.nbentite = nbentite;
     }
 
@@ -97,12 +99,6 @@ public class Activite implements Serializable {
         this.entiteList = entiteList;
     }
 
-    @Override
-    public int hashCode() {
-        int hash = 0;
-        hash += (idact != null ? idact.hashCode() : 0);
-        return hash;
-    }
 
     @Override
     public boolean equals(Object object) {
@@ -111,9 +107,7 @@ public class Activite implements Serializable {
             return false;
         }
         Activite other = (Activite) object;
-        if ((this.idact == null && other.idact != null) || (this.idact != null && !this.idact.equals(other.idact))) {
-            return false;
-        }
+      
         return true;
     }
 

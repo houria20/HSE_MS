@@ -28,5 +28,5 @@ public class UtilisateurFacade extends AbstractFacade<Utilisateur> {
     public UtilisateurFacade() {
         super(Utilisateur.class);
     }
-    
+   
 }

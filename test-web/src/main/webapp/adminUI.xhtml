@@ -12,14 +12,14 @@
     <h:body >
         <h:graphicImage  library = "images"  name="header.png" id="header" />
         <h:graphicImage  library = "images"  name="logoSonatrachMenu.png" id="logoHeader"/>
-        <p:commandLink id="logoutHeader">
-                 <h:graphicImage  library = "images"  name="logout.png" />
-            </p:commandLink>
+        
         <h:form id="form">
             <p:growl id="msgs" showDetail="true"/>
             <p:growl id="message" showDetail="true"/>
-            
-            <p:dataTable id="user" var="user" widgetVar="usersTable" value="#{adminController.utilisateurs}" editable="true" styleClass="tab" emptyMessage="Aucun compte existant avec les critères donnés" filteredValue="#{adminController.filteredAccounts}">
+            <p:commandLink id="logoutHeader">
+                 <h:graphicImage  library = "images"  name="logout.png" />
+            </p:commandLink>
+            <p:dataTable id="user" var="user" widgetVar="usersTable" value="#{adminController.getAllUsers()}" editable="true" styleClass="tab" emptyMessage="Aucun compte existant avec les critères donnés" filteredValue="#{adminController.filteredAccounts}">
                 <f:facet name="header">
                     Liste des utilisateurs
                 </f:facet>
@@ -27,44 +27,44 @@
                 <p:ajax event="rowEditCancel" listener="#{adminController.onRowCancel}" update=":form:msgs" />
                 <p:column headerText="Id">
                     <p:cellEditor>
-                        <f:facet name="output"><h:outputText value="#{utilisateur.id}" /></f:facet>
-                        <f:facet name="input"><p:inputText id="modelInput" value="#{utilisateur.id}" style="width:100%"/></f:facet>
+                        <f:facet name="output"><h:outputText value="#{user.iduser}" /></f:facet>
+                        <f:facet name="input"><p:inputText id="modelInput" value="#{user.iduser}" style="width:100%"/></f:facet>
                     </p:cellEditor> 
                 </p:column>
                 <p:column headerText="Nom">
                     <p:cellEditor>
-                        <f:facet name="output"><h:outputText value="#{utilisateur.nom}" /></f:facet>
-                        <f:facet name="input"><p:inputText value="#{utilisateur.nom}" style="width:100%" label="nom"/></f:facet>
+                        <f:facet name="output"><h:outputText value="#{user.nom}" /></f:facet>
+                        <f:facet name="input"><p:inputText value="#{user.nom}" style="width:100%" label="nom"/></f:facet>
                     </p:cellEditor>
                 </p:column>
                 <p:column headerText="Prénom"> 
                     <p:cellEditor>
-                        <f:facet name="output"><h:outputText value="#{utilisateur.prenom}" /></f:facet>
-                        <f:facet name="input"><p:inputText  value="#{utilisateur.prenom}" style="width:100%" label="prenom"/></f:facet>
+                        <f:facet name="output"><h:outputText value="#{user.prenom}" /></f:facet>
+                        <f:facet name="input"><p:inputText  value="#{user.prenom}" style="width:100%" label="prenom"/></f:facet>
                     </p:cellEditor>
                 </p:column>
                 <p:column headerText="Email">
                     <p:cellEditor>
-                        <f:facet name="output"><h:outputText value="#{utilisateur.email}" /></f:facet>
-                        <f:facet name="input"><p:inputText  value="#{utilisateur.email}" style="width:100%" label="email"/></f:facet>
+                        <f:facet name="output"><h:outputText value="#{user.email}" /></f:facet>
+                        <f:facet name="input"><p:inputText  value="#{user.email}" style="width:100%" label="email"/></f:facet>
                     </p:cellEditor>
                 </p:column>
                 <p:column headerText="Nom d'utilisateur">
                     <p:cellEditor>
-                        <f:facet name="output"><h:outputText value="#{utilisateur.username}" /></f:facet>
-                        <f:facet name="input"><p:inputText value="#{utilisateur.username}" style="width:100%" label="userName"/></f:facet>
+                        <f:facet name="output"><h:outputText value="#{user.username}" /></f:facet>
+                        <f:facet name="input"><p:inputText value="#{user.username}" style="width:100%" label="userName"/></f:facet>
                     </p:cellEditor>
                 </p:column>
                 <p:column headerText="Mot De Passe">
                     <p:cellEditor>
-                        <f:facet name="output"><h:outputText value="#{utilisateur.pw}" /></f:facet>
-                        <f:facet name="input"><p:inputText value="#{utilisateur.pw}" style="width:100%" label="MotDePasse"/></f:facet>
+                        <f:facet name="output"><h:outputText value="#{user.password}" /></f:facet>
+                        <f:facet name="input"><p:inputText value="#{user.password}" style="width:100%" label="MotDePasse"/></f:facet>
                     </p:cellEditor>
                 </p:column>
-                <p:column headerText="Poste" filterBy="#{utilisateur.poste}"  filterMatchMode="exact">
+                <p:column headerText="Poste" filterBy="#{user.dtype}"  filterMatchMode="exact">
                     <p:cellEditor>
-                        <f:facet name="output"><h:outputText value="#{utilisateur.poste}" /></f:facet>
-                        <f:facet name="input"><p:inputText value="#{utilisateur.poste}" style="width:100%" label="Poste"/></f:facet>
+                        <f:facet name="output"><h:outputText value="#{user.dtype}" /></f:facet>
+                        <f:facet name="input"><p:inputText value="#{user.dtype}" style="width:100%" label="Poste"/></f:facet>
                     </p:cellEditor>
                     <f:facet name="filter">
                         <p:selectOneMenu onchange="PF('usersTable').filter()" styleClass="custom-filter">
@@ -75,8 +75,8 @@
                 </p:column>
                 <p:column headerText="Structure">
                     <p:cellEditor>
-                        <f:facet name="output"><h:outputText value="#{utilisateur.structure}" /></f:facet>
-                        <f:facet name="input"><p:inputText value="#{utilisateur.structure}" style="width:100%" label="Structure"/></f:facet>
+                        <f:facet name="output"><h:outputText value="#{user.getVicepresident().getIdact().getDesignationact()}" /></f:facet>
+                        <f:facet name="input"><p:inputText value="#{user.getVicepresident().getIdact().getDesignationact()}" style="width:100%" label="Structure"/></f:facet>
                     </p:cellEditor>
                 </p:column>
                 <p:column style="width:35px">
@@ -93,7 +93,7 @@
                 </p:column>
             </p:dataTable>
             <p:menuButton value="Ajouter">
-                <p:menuitem value="Vice-Président" onclick="PF('dlg1').show();" />
+                <p:menuitem value="Vice-Président" onclick="PF('dlg1').show();"/>
                 <p:menuitem value="Responsable Entité" onclick="PF('dlg2').show();" />
                 <p:menuitem value="Asset Manager" onclick="PF('dlg3').show();" />
                 <p:menuitem value="Auditeur CP" onclick="PF('dlg4').show();" />
@@ -127,7 +127,7 @@
                         </p:password>
                         <p:message for="@previous"/>
                     </h:panelGrid>
-                    <p:commandButton value="Enregistrer"  action="#{adminController.addUser()}" validateClient="true"/>
+                    <p:commandButton value="Enregistrer"  action="#{adminController.createUser()}" validateClient="true"/>
                 </p:panel>
             </h:form>
         </p:dialog>
@@ -162,7 +162,7 @@
                         </p:inputText>  
                         <p:message for="@previous"/>
                     </h:panelGrid>
-                    <p:commandButton value="Enregistrer"  action="#{adminController.add}" validateClient="true" />
+                    <p:commandButton value="Enregistrer"  action="#{adminController.createVP}" validateClient="true" />
                 </p:panel>
             </h:form>
         </p:dialog>
@@ -202,7 +202,7 @@
                         </p:inputText>
                         <p:message for="@previous"/>
                     </h:panelGrid>
-                    <p:commandButton value="Enregistrer"  action="#{adminController.add}" validateClient="true" />
+                    <p:commandButton value="Enregistrer"  action="#{adminController.createUser()}" validateClient="true" />
                 </p:panel>
             </h:form>
         </p:dialog>
@@ -248,7 +248,7 @@
                         <p:message for="@previous"/>
                         <p:selectBooleanCheckbox value="#{adminController.presidentCP}" itemLabel="Président CP"/>
                     </h:panelGrid>
-                    <p:commandButton value="Enregistrer"  action="#{adminController.add()}"  validateClient="true"/>
+                    <p:commandButton value="Enregistrer"  action="#{adminController.createUser()}"  validateClient="true"/>
                 </p:panel>
             </h:form>
         </p:dialog>
@@ -288,7 +288,7 @@
                         </p:inputText>
                         <p:message for="@previous"/>
                     </h:panelGrid>
-                    <p:commandButton value="Enregistrer"  action="#{adminController.add()}"  validateClient="true"/>
+                    <p:commandButton value="Enregistrer"  action="#{adminController.createUser()}"  validateClient="true"/>
                 </p:panel>
             </h:form>
         </p:dialog>
@@ -331,7 +331,7 @@
                         </p:inputText>
                         <p:message for="@previous"/>
                     </h:panelGrid>
-                    <p:commandButton value="Enregistrer"  action="#{adminController.add()}"  validateClient="true"/>
+                    <p:commandButton value="Enregistrer"  action="#{adminController.createUser()}"  validateClient="true"/>
                 </p:panel>
             </h:form>
         </p:dialog>
